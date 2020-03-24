@@ -50,6 +50,7 @@ import org.pjsip.pjsua2.pjmedia_orient;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_status_code;
 import org.pjsip.pjsua2.pjsip_transport_type_e;
+import org.pjsip.pjsua2.CallSendRequestParam;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -875,7 +876,18 @@ public class PjSipService extends Service {
 
             // -----
             PjSipCall call = findCall(callId);
-            call.dialDtmf(digits);
+            
+            // Disables Original RFC 2833 dtmf
+            //call.dialDtmf(digits);
+            
+            // Adds Patch For SIPINFO dtmf
+            CallSendRequestParam prm = new CallSendRequestParam();
+            prm.setMethod("INFO");
+            SipTxOption txo = new SipTxOption();
+            txo.setContentType("application/dtmf-relay");
+            txo.setMsgBody("Signal=" + String.valueOf(digits) + "\n" + "Duration=160");
+            prm.setTxOption(txo);
+            call.sendRequest(prm);
 
             mEmitter.fireIntentHandled(intent);
         } catch (Exception e) {

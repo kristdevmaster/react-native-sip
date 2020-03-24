@@ -109,10 +109,7 @@ endpoint.addListener("call_terminated", (newCall) => {
 
 ## API
 
-1. [Startup](https://github.com/florindumitru/react-native-sip/blob/master/docs/startup.md)
-2. [Accounts](https://github.com/florindumitru/react-native-sip/blob/master/docs/accounts.md)
-3. [Calls](https://github.com/florindumitru/react-native-sip/blob/master/docs/calls.md)
-4. [Settings](https://github.com/florindumitru/react-native-sip/blob/master/docs/settings.md)
+[DOCUMENTATION](https://florindumitru.github.io/react-native-sip/)
 
 
 

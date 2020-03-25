@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-VERSION="v2.8.0"
-URL="https://github.com/florindumitru/react-native-pjsip-builder/archive/${VERSION}.tar.gz"
+VERSION="v2.9.0"
+URL="https://github.com/FastPBX/react-native-pjsip-builder/archive/${VERSION}.tar.gz"
 LOCK=".libs.lock"
 DEST=".libs.tar.gz"
 DOWNLOAD=true
@@ -30,7 +30,7 @@ if [ "$DOWNLOAD" = true ]; then
     rm -f "${DEST}"
 
     echo "${VERSION}" > ${LOCK}
-    cd react-native-pjsip-builder-2.8.0
+    cd react-native-pjsip-builder-2.9.0
     ./release.sh
     cp -rf dist/ios/VialerPJSIP.framework ../ios/
     cp -rf dist/android/src/* ../android/src

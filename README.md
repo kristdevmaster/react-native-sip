@@ -29,8 +29,8 @@ iOS - For RN 0.60+ you need to execute the following commands:
 
 ## Installation
 
-- [iOS](https://github.com/florindumitru/react-native-sip/blob/master/docs/installation_ios.md)
-- [Android](https://github.com/florindumitru/react-native-sip/blob/master/docs/installation_android.md)
+- [iOS](https://github.com/FastPBX/react-native-sip/blob/master/docs/installation_ios.md)
+- [Android](https://github.com/FastPBX/react-native-sip/blob/master/docs/installation_android.md)
 
 ## Usage
 
@@ -109,9 +109,6 @@ endpoint.addListener("call_terminated", (newCall) => {
 
 ## API
 
-[DOCUMENTATION](https://florindumitru.github.io/react-native-sip/)
+[DOCUMENTATION](https://FastPBX.github.io/react-native-sip/)
 
-
-
-
-*This repo it's based on a fork of [datso/react-native-pjsip](https://github.com/datso/react-native-pjsip).* 
+*This repo it's based on a fork of [florindumitru/react-native-sip](https://github.com/florindumitru/react-native-sip).*

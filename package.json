@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "postinstall": "bash libs.sh",
     "lint": "eslint ./src",
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
@@ -45,5 +46,5 @@
     "type": "git",
     "url": "git+https://github.com/florindumitru/react-native-sip.git"
   },
-  "version": "2.9.1"
+  "version": "2.9.2"
 }

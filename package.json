@@ -24,7 +24,8 @@
     "eslint-plugin-react-native": "^3.3.0",
     "gh-pages": "^2.0.0",
     "jsdoc": "^3.5.5",
-    "minami": "^1.2.3"
+    "minami": "^1.2.3",
+    "release-it": "^13.3.2"
   },
   "name": "react-native-sip",
   "description": "SIP module for React Native",
@@ -46,5 +47,5 @@
     "type": "git",
     "url": "git+https://github.com/FastPBX/react-native-sip.git"
   },
-  "version": "2.10.2" 
+  "version": "2.10.2"
 }

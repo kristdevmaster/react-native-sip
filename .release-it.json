@@ -1,0 +1,11 @@
+{
+    "hooks": {
+        "before:init": ["bash ./build.sh"]
+    },
+    "github": {
+        "release": true
+    },
+    "npm": {
+        "publish": false
+    }
+}

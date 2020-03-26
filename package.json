@@ -2,7 +2,8 @@
   "scripts": {
     "postinstall": "bash libs.sh",
     "lint": "eslint ./src",
-    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
+    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
+    "release": "release-it"
   },
   "author": {
     "name": "David Melo",

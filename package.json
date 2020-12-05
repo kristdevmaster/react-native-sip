@@ -6,11 +6,11 @@
     "release": "release-it"
   },
   "author": {
-    "name": "David Melo",
-    "email": "david.melo@fastpbx.com"
+    "name": "Attila Szenci",
+    "email": "szenci@dotlab.rs"
   },
   "bugs": {
-    "url": "https://github.com/FastPBX/react-native-sip/issues"
+    "url": "https://github.com/dotlabdev/react-native-sip/issues"
   },
   "dependencies": {
     "events": "1.1.0"

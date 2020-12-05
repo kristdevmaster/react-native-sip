@@ -1036,8 +1036,9 @@ public class PjSipService extends Service {
                     // Acquire wifi lock
                     mWifiLock.acquire();
 
+                    //From API level 13 in VoIP calls mode should be used.MODE_IN_CALL causes poor sound quality.
                     if (callState == pjsip_inv_state.PJSIP_INV_STATE_EARLY || callState == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED) {
-                        mAudioManager.setMode(AudioManager.MODE_IN_CALL);
+                        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
                     }
                 }
             });

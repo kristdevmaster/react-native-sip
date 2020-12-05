@@ -3,6 +3,7 @@
 # react-native-sip
 ![npm version](https://badge.fury.io/js/react-native-sip.svg)
 
+**UPDATE**: This fork fixes poor call quality on Android 9+ due to AudioManager Mode change.
 **UPDATE**: Now is compatible with RN 0.60+ (iOS and AndroidX)
 
 iOS - For RN 0.60+ you need to execute the following commands:

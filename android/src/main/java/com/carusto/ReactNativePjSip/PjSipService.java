@@ -263,6 +263,8 @@ public class PjSipService extends Service {
         try {
             if (mEndpoint != null) {
                 mEndpoint.libDestroy();
+                mEndpoint.delete();
+                mEndpoint = null;
             }
         } catch (Exception e) {
             Log.w(TAG, "Failed to destroy PjSip library", e);

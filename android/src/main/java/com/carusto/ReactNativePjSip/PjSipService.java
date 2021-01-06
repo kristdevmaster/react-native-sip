@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -100,13 +101,14 @@ public class PjSipService extends Service {
 
     private TelephonyManager mTelephonyManager;
 
+    private CallDetectionPhoneStateListener callDetectionPhoneStateListener;
+
     private WifiManager mWifiManager;
 
     private WifiManager.WifiLock mWifiLock;
 
     private boolean mGSMIdle;
 
-    private BroadcastReceiver mPhoneStateChangedReceiver = new PhoneStateChangedReceiver();
 
     public PjSipBroadcastEmiter getEmitter() {
         return mEmitter;
@@ -226,11 +228,9 @@ public class PjSipService extends Service {
             mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             mWifiLock = mWifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, this.getPackageName() + "-wifi-call-lock");
             mWifiLock.setReferenceCounted(false);
-            mTelephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            mGSMIdle = mTelephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE;
 
-            IntentFilter phoneStateFilter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-            registerReceiver(mPhoneStateChangedReceiver, phoneStateFilter);
+
+            this.startTelephonyListener();
 
             mInitialized = true;
 
@@ -254,6 +254,7 @@ public class PjSipService extends Service {
         return START_NOT_STICKY;
     }
 
+
     @Override
     public void onDestroy() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -270,7 +271,7 @@ public class PjSipService extends Service {
             Log.w(TAG, "Failed to destroy PjSip library", e);
         }
 
-        unregisterReceiver(mPhoneStateChangedReceiver);
+        this.stopTelephonyListener();
 
         super.onDestroy();
     }
@@ -1113,15 +1114,42 @@ public class PjSipService extends Service {
         }
     }
 
-    protected class PhoneStateChangedReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String extraState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+    public void startTelephonyListener() {
+        mTelephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        mGSMIdle = mTelephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE;
 
-            if (TelephonyManager.EXTRA_STATE_RINGING.equals(extraState) || TelephonyManager.EXTRA_STATE_OFFHOOK.equals(extraState)) {
+        callDetectionPhoneStateListener = new CallDetectionPhoneStateListener();
+        mTelephonyManager.listen(callDetectionPhoneStateListener,
+                PhoneStateListener.LISTEN_CALL_STATE);
+    }
+
+    public void stopTelephonyListener() {
+        mTelephonyManager.listen(callDetectionPhoneStateListener,
+                PhoneStateListener.LISTEN_NONE);
+        mTelephonyManager = null;
+        callDetectionPhoneStateListener = null;
+    }
+
+
+    protected class CallDetectionPhoneStateListener extends PhoneStateListener {
+
+
+        public CallDetectionPhoneStateListener() {
+            super();
+        }
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            this.phoneCallStateUpdated(state);
+        }
+
+        public void phoneCallStateUpdated(int state) {
+            if (state == TelephonyManager.CALL_STATE_RINGING || state == TelephonyManager.CALL_STATE_OFFHOOK) {
                 Log.d(TAG, "GSM call received, pause all SIP calls and do not accept incoming SIP calls.");
 
                 mGSMIdle = false;
+
+                mEmitter.fireGSMChanged(true);
 
                 job(new Runnable() {
                     @Override
@@ -1129,13 +1157,12 @@ public class PjSipService extends Service {
                         doPauseAllCalls();
                     }
                 });
-
-                mEmitter.fireGSMChanged(true);
-            } else if (TelephonyManager.EXTRA_STATE_IDLE.equals(extraState)) {
+            } else if (state == TelephonyManager.CALL_STATE_IDLE) {
                 Log.d(TAG, "GSM call released, allow to accept incoming calls.");
                 mGSMIdle = true;
                 mEmitter.fireGSMChanged(false);
             }
         }
+
     }
 }

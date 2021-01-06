@@ -120,4 +120,12 @@ public class PjSipBroadcastEmiter {
 
         context.sendBroadcast(intent);
     }
+
+    public void fireGSMChanged(Boolean isUsingGSM) {
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_GSM_CHANGED);
+        intent.putExtra("data", isUsingGSM);
+
+        context.sendBroadcast(intent);
+    }
 }

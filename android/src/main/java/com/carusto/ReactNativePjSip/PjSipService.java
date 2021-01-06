@@ -165,7 +165,7 @@ public class PjSipService extends Service {
             if (mServiceConfiguration.isUserAgentNotEmpty()) {
                 epConfig.getUaConfig().setUserAgent(mServiceConfiguration.getUserAgent());
             } else {
-                epConfig.getUaConfig().setUserAgent("React Native PjSip ("+ mEndpoint.libVersion().getFull() +")");
+                epConfig.getUaConfig().setUserAgent("React Native PjSip (" + mEndpoint.libVersion().getFull() + ")");
             }
 
             if (mServiceConfiguration.isStunServersNotEmpty()) {
@@ -224,7 +224,7 @@ public class PjSipService extends Service {
             mAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
             mPowerManager = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
             mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            mWifiLock = mWifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, this.getPackageName()+"-wifi-call-lock");
+            mWifiLock = mWifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, this.getPackageName() + "-wifi-call-lock");
             mWifiLock.setReferenceCounted(false);
             mTelephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
             mGSMIdle = mTelephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE;
@@ -311,8 +311,7 @@ public class PjSipService extends Service {
         // IMO, the proper implementation would be:
         try {
             account.shutdown();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.w(TAG, "Failed to shutdown account", e);
         }
 
@@ -342,7 +341,7 @@ public class PjSipService extends Service {
             return;
         }
 
-        Log.d(TAG, "Handle \""+ intent.getAction() +"\" action ("+ ArgumentUtils.dumpIntentExtraParameters(intent) +")");
+        Log.d(TAG, "Handle \"" + intent.getAction() + "\" action (" + ArgumentUtils.dumpIntentExtraParameters(intent) + ")");
 
         switch (intent.getAction()) {
             // General actions
@@ -427,7 +426,7 @@ public class PjSipService extends Service {
             CodecInfoVector codVect = mEndpoint.codecEnum();
             JSONObject codecs = new JSONObject();
 
-            for(int i=0;i<codVect.size();i++){
+            for (int i = 0; i < codVect.size(); i++) {
                 CodecInfo codInfo = codVect.get(i);
                 String codId = codInfo.getCodecId();
                 short priority = codInfo.getPriority();
@@ -486,7 +485,7 @@ public class PjSipService extends Service {
             }
 
             if (account == null) {
-                throw new Exception("Account with \""+ accountId +"\" id not found");
+                throw new Exception("Account with \"" + accountId + "\" id not found");
             }
 
             account.register(renew);
@@ -503,11 +502,11 @@ public class PjSipService extends Service {
 
         // General settings
         AuthCredInfo cred = new AuthCredInfo(
-            "Digest",
-            configuration.getNomalizedRegServer(),
-            configuration.getUsername(),
-            0,
-            configuration.getPassword()
+                "Digest",
+                configuration.getNomalizedRegServer(),
+                configuration.getUsername(),
+                0,
+                configuration.getPassword()
         );
 
         String idUri = configuration.getIdUri();
@@ -557,7 +556,7 @@ public class PjSipService extends Service {
                     transportId = mTlsTransportId;
                     break;
                 default:
-                    Log.w(TAG, "Illegal \""+ configuration.getTransport() +"\" transport (possible values are UDP, TCP or TLS) use TCP instead");
+                    Log.w(TAG, "Illegal \"" + configuration.getTransport() + "\" transport (possible values are UDP, TCP or TLS) use TCP instead");
                     break;
             }
         }
@@ -604,7 +603,7 @@ public class PjSipService extends Service {
             }
 
             if (account == null) {
-                throw new Exception("Account with \""+ accountId +"\" id not found");
+                throw new Exception("Account with \"" + accountId + "\" id not found");
             }
 
             evict(account);
@@ -876,10 +875,10 @@ public class PjSipService extends Service {
 
             // -----
             PjSipCall call = findCall(callId);
-            
+
             // Disables Original RFC 2833 dtmf
             //call.dialDtmf(digits);
-            
+
             // Adds Patch For SIPINFO dtmf
             CallSendRequestParam prm = new CallSendRequestParam();
             prm.setMethod("INFO");
@@ -927,7 +926,7 @@ public class PjSipService extends Service {
             }
         }
 
-        throw new Exception("Account with specified \""+ id +"\" id not found");
+        throw new Exception("Account with specified \"" + id + "\" id not found");
     }
 
     private PjSipCall findCall(int id) throws Exception {
@@ -937,7 +936,7 @@ public class PjSipService extends Service {
             }
         }
 
-        throw new Exception("Call with specified \""+ id +"\" id not found");
+        throw new Exception("Call with specified \"" + id + "\" id not found");
     }
 
     void emmitRegistrationChanged(PjSipAccount account, OnRegStateParam prm) {
@@ -961,39 +960,38 @@ public class PjSipService extends Service {
         }
 
         /**
-        // Automatically start application when incoming call received.
-        if (mAppHidden) {
-            try {
-                String ns = getApplicationContext().getPackageName();
-                String cls = ns + ".MainActivity";
+         // Automatically start application when incoming call received.
+         if (mAppHidden) {
+         try {
+         String ns = getApplicationContext().getPackageName();
+         String cls = ns + ".MainActivity";
 
-                Intent intent = new Intent(getApplicationContext(), Class.forName(cls));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.EXTRA_DOCK_STATE_CAR);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent.putExtra("foreground", true);
+         Intent intent = new Intent(getApplicationContext(), Class.forName(cls));
+         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.EXTRA_DOCK_STATE_CAR);
+         intent.addCategory(Intent.CATEGORY_LAUNCHER);
+         intent.putExtra("foreground", true);
 
-                startActivity(intent);
-            } catch (Exception e) {
-                Log.w(TAG, "Failed to open application on received call", e);
-            }
+         startActivity(intent);
+         } catch (Exception e) {
+         Log.w(TAG, "Failed to open application on received call", e);
+         }
+         }
+
+         job(new Runnable() {
+        @Override public void run() {
+        // Brighten screen at least 10 seconds
+        PowerManager.WakeLock wl = mPowerManager.newWakeLock(
+        PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE | PowerManager.FULL_WAKE_LOCK,
+        "incoming_call"
+        );
+        wl.acquire(10000);
+
+        if (mCalls.size() == 0) {
+        mAudioManager.setSpeakerphoneOn(true);
         }
-
-        job(new Runnable() {
-            @Override
-            public void run() {
-                // Brighten screen at least 10 seconds
-                PowerManager.WakeLock wl = mPowerManager.newWakeLock(
-                    PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE | PowerManager.FULL_WAKE_LOCK,
-                    "incoming_call"
-                );
-                wl.acquire(10000);
-
-                if (mCalls.size() == 0) {
-                    mAudioManager.setSpeakerphoneOn(true);
-                }
-            }
+        }
         });
-        **/
+         **/
 
         // -----
         mCalls.add(call);
@@ -1129,9 +1127,12 @@ public class PjSipService extends Service {
                         doPauseAllCalls();
                     }
                 });
+
+                mEmitter.fireGSMChanged(true);
             } else if (TelephonyManager.EXTRA_STATE_IDLE.equals(extraState)) {
                 Log.d(TAG, "GSM call released, allow to accept incoming calls.");
                 mGSMIdle = true;
+                mEmitter.fireGSMChanged(false);
             }
         }
     }

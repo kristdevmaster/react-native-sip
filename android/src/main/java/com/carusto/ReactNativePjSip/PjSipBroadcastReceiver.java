@@ -49,6 +49,7 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
         filter.addAction(PjActions.EVENT_CALL_SCREEN_LOCKED);
         filter.addAction(PjActions.EVENT_MESSAGE_RECEIVED);
         filter.addAction(PjActions.EVENT_HANDLED);
+        filter.addAction(PjActions.EVENT_GSM_CHANGED);
 
         return filter;
     }
@@ -80,6 +81,9 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
                 break;
             case PjActions.EVENT_CALL_TERMINATED:
                 onCallTerminated(intent);
+                break;
+            case PjActions.EVENT_GSM_CHANGED:
+                onGSMChanged(intent);
                 break;
             default:
                 onCallback(intent);
@@ -116,6 +120,11 @@ public class PjSipBroadcastReceiver extends BroadcastReceiver {
         String json = intent.getStringExtra("data");
         Object params = ArgumentUtils.fromJson(json);
         emit("pjSipCallTerminated", params);
+    }
+
+    private void onGSMChanged(Intent intent) {
+        Boolean isUsingGSM = intent.getBooleanExtra("data",false);
+        emit("pjSipGSMChanged", isUsingGSM);
     }
 
     private void onCallback(Intent intent) {

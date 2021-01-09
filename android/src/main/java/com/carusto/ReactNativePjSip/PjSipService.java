@@ -263,6 +263,7 @@ public class PjSipService extends Service {
 
         try {
             if (mEndpoint != null) {
+                mEndpoint.libStopWorkerThreads();
                 mEndpoint.libDestroy();
                 mEndpoint.delete();
                 mEndpoint = null;

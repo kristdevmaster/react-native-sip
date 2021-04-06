@@ -1,0 +1,1 @@
+{"version":3,"sources":["RemoteVideoView.tsx"],"names":["View"],"mappings":";;;;;;;AAAA;;AAEA,MAAMA,IAAI,GAAG,yCAA6E,sBAA7E,CAAb;eAEeA,I","sourcesContent":["import { requireNativeComponent } from \"react-native\";\n\nconst View = requireNativeComponent<{ windowId: string; objectFit: \"contain\" | \"cover\" }>(\"PjSipRemoteVideoView\");\n\nexport default View;\n"]}

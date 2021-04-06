@@ -1,0 +1,1 @@
+{"version":3,"sources":["PreviewVideoView.tsx"],"names":["View"],"mappings":";;;;;;;AAAA;;AAEA,MAAMA,IAAI,GAAG,yCAA6E,uBAA7E,CAAb;eAEeA,I","sourcesContent":["import { requireNativeComponent } from \"react-native\";\n\nconst View = requireNativeComponent<{ deviceId: number; objectFit: \"contain\" | \"cover\" }>(\"PjSipPreviewVideoView\");\n\nexport default View;\n"]}

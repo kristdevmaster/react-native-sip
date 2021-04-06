@@ -52,6 +52,12 @@ export interface startResult {
   connectivity: any;
 }
 
+export interface EndpointStart {
+  accounts: Array<Account>;
+  calls: Array<Call>;
+  [key: string]: any;
+}
+
 export interface createAccountConfiguration {
   name: string;
   username: string;
@@ -195,7 +201,7 @@ export default class Endpoint extends EventEmitter {
    * @returns {Promise}
    */
   start(configuration: any) {
-    return new Promise((resolve, reject) => {
+    return new Promise<EndpointStart>((resolve, reject) => {
       NativeModules.PjSipModule.start(
         configuration,
         (successful: boolean, data: startResult) => {

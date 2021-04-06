@@ -45,6 +45,11 @@ export interface startResult {
     settings: any;
     connectivity: any;
 }
+export interface EndpointStart {
+    accounts: Array<Account>;
+    calls: Array<Call>;
+    [key: string]: any;
+}
 export interface createAccountConfiguration {
     name: string;
     username: string;
@@ -127,7 +132,7 @@ export default class Endpoint extends EventEmitter {
      *
      * @returns {Promise}
      */
-    start(configuration: any): Promise<unknown>;
+    start(configuration: any): Promise<EndpointStart>;
     stop(): Promise<unknown>;
     updateStunServers(accountId: number, stunServerList: any): Promise<unknown>;
     /**

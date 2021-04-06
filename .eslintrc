@@ -1,10 +1,27 @@
 {
-  "extends": "airbnb",
-  "parser": "babel-eslint",
-  "plugins": [
-    "react-native"
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react-native"],
   "rules": {
-    "semi": ["error", "never"]
-  }
+    "no-underscore-dangle": "off",
+    "quotes": "off",
+    "no-restricted-globals": "off",
+    "class-methods-use-this": "off",
+    "object-curly-newline": "off",
+    "import/extensions": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-prototype-builtins": "off",
+    "arrow-parens": "off",
+    "max-len": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "ignorePatterns": "**/scripts/*.js"
 }

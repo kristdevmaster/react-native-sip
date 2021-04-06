@@ -1,132 +1,122 @@
-import AccountRegistration from './AccountRegistration'
-
+import AccountRegistration from "./AccountRegistration";
 /**
  * This describes account configuration and registration status
  */
+interface AccountData {
+    id: number;
+    uri: string;
+    name: string;
+    username: string;
+    domain: string;
+    password: string;
+    proxy: string;
+    transport: string;
+    contactParams: string;
+    contactUriParams: string;
+    regServer: string;
+    regTimeout: string;
+    regContactParams: string;
+    regHeaders: any;
+}
+interface AccountConstructor extends AccountData {
+    registration: any;
+}
 export default class Account {
+    _data: AccountData;
 
-    constructor(data) {
-        this._data = data;
-        this._registration = new AccountRegistration(data['registration']);
-    }
+    _registration: AccountRegistration;
+
+    constructor(data: AccountConstructor);
 
     /**
      * The account ID.
      * @returns {int}
      */
-    getId() {
-        return this._data.id;
-    }
+    getId(): number;
 
     /**
-     * This is the URL to be put in the request URI for the registration, and will look something like "sip:serviceprovider".
+     * This is the URL to be put in the request URI for the registration,
+     * and will look something like "sip:serviceprovider".
      * @returns {String}
      */
-    getURI() {
-        return this._data.uri;
-    }
+    getURI(): string;
 
     /**
      * Full name specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getName() {
-        return this._data.name;
-    }
+    getName(): string;
 
     /**
      * Username specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getUsername() {
-        return this._data.username;
-    }
+    getUsername(): string;
 
     /**
      * Domain specified in Endpoint.createAccount().
      * @returns {int|null}
      */
-    getDomain() {
-        return this._data.domain;
-    }
+    getDomain(): string;
 
     /**
      * Password specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getPassword() {
-        return this._data.password;
-    }
+    getPassword(): string;
 
     /**
      * Proxy specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getProxy() {
-        return this._data.proxy;
-    }
+    getProxy(): string;
 
     /**
      * Transport specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getTransport() {
-        return this._data.transport;
-    }
+    getTransport(): string;
 
     /**
      * Additional parameters that will be appended in the Contact header
      * for this account.
      * @returns {String}
      */
-    getContactParams() {
-        return this._data.contactParams;
-    }
+    getContactParams(): string;
 
     /**
      * Additional URI parameters that will be appended in the Contact URI
      * for this account.
      * @returns {String}
      */
-    getContactUriParams() {
-        return this._data.contactUriParams;
-    }
+    getContactUriParams(): string;
 
     /**
      * Port specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getRegServer() {
-        return this._data.regServer || "";
-    }
+    getRegServer(): string;
 
     /**
      * Port specified in Endpoint.createAccount().
      * @returns {String}
      */
-    getRegTimeout() {
-        return this._data.regTimeout;
-    }
+    getRegTimeout(): string;
 
     /**
      * @returns {String}
      */
-    getRegContactParams() {
-        return this._data.regContactParams;
-    }
+    getRegContactParams(): string;
 
     /**
      * @returns {Object}
      */
-    getRegHeaders() {
-        return this._data.regHeaders;
-    }
+    getRegHeaders(): any;
 
     /**
      * Account registration status.
      * @returns {AccountRegistration}
      */
-    getRegistration() {
-        return this._registration;
-    }
+    getRegistration(): AccountRegistration;
 }
+export {};

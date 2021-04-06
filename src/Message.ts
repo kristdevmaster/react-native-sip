@@ -2,7 +2,7 @@
  * This class describes the information and current status of a call.
  */
 
-interface MessageConstructor {
+export interface MessageConstructor {
   accountId: number;
   contactUri: string;
   fromUri: string;

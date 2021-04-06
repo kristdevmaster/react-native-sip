@@ -1,13 +1,15 @@
-import AccountRegistration, { AccountRegistrationConstructor } from "./AccountRegistration";
+import AccountRegistration, {
+  AccountRegistrationConstructor,
+} from './AccountRegistration';
 /**
  * This describes account configuration and registration status
  */
 
-interface RegHeaders {
+export interface RegHeaders {
   [key: string]: string | number;
 }
 
-interface AccountData {
+export interface AccountData {
   id: number;
   uri: string;
   name: string;
@@ -126,7 +128,7 @@ export default class Account {
    * @returns {String}
    */
   getRegServer() {
-    return this._data.regServer || "";
+    return this._data.regServer || '';
   }
 
   /**

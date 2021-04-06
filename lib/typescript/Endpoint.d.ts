@@ -1,8 +1,51 @@
 /// <reference types="node" />
-import { EventEmitter } from "events";
-import Account, { AccountConstructor } from "./Account";
-import Call, { CallConstructor } from "./Call";
-interface createAccountConfiguration {
+import { EventEmitter } from 'events';
+import Account, { AccountConstructor } from './Account';
+import Call, { CallConstructor } from './Call';
+/**
+ * SIP headers object, where each key is a header name and value is a header value.
+ * Example:
+ * {
+ *   "X-Custom-Header": "Test Header Value",
+ *   "X-Custom-ID": "Awesome Header"
+ * }
+ *
+ * @typedef {Object} PjSipHdrList
+ */
+/**
+ * An additional information to be sent with outgoing SIP message.
+ * It can (optionally) be specified for example
+ * with #Endpoint.makeCall(), #Endpoint.answerCall(), #Endpoint.hangupCall(),
+ * #Endpoint.holdCall() and many more.
+ *
+ * @typedef {Object} PjSipMsgData
+ * @property {String} target_uri - Indicates whether the Courage component is present.
+ * @property {PjSipHdrList} hdr_list - Additional message headers as linked list.
+ * @property {String} content_type - MIME type of optional message body.
+ * @property {String} msg_body - MIME type of optional message body.
+ */
+/**
+ * An additional information to be sent with outgoing SIP message.
+ * It can (optionally) be specified for example
+ * with #Endpoint.makeCall(), #Endpoint.answerCall(), #Endpoint.hangupCall(),
+ * #Endpoint.holdCall() and many more.
+ *
+ * @typedef {Object} PjSipCallSetttings
+ * @property {number} flag - Bitmask of #pjsua_call_flag constants.
+ * @property {number} req_keyframe_method - This flag controls what methods to request
+ * keyframe are allowed on the call.
+ * @property {number} aud_cnt - Number of simultaneous active audio streams for this call.
+ * Setting this to zero will disable audio in this call.
+ * @property {number} vid_cnt - Number of simultaneous active video streams for this call.
+ * Setting this to zero will disable video in this call.
+ */
+export interface startResult {
+    accounts: Array<AccountConstructor>;
+    calls: Array<CallConstructor>;
+    settings: any;
+    connectivity: any;
+}
+export interface createAccountConfiguration {
     name: string;
     username: string;
     domain: string;
@@ -12,7 +55,7 @@ interface createAccountConfiguration {
     regServer: string;
     regTimeout: number;
 }
-interface PjSipCallSetttings {
+export interface PjSipCallSetttings {
     /**
      *
      * Bitmask of #pjsua_call_flag constants.
@@ -42,7 +85,7 @@ interface PjSipCallSetttings {
      */
     vid_cnt: number;
 }
-interface PjSipMsgData {
+export interface PjSipMsgData {
     /**
      *
      * Indicates whether the Courage component is present.
@@ -74,7 +117,8 @@ interface PjSipMsgData {
      */
     msg_body: string;
 }
-declare type OrientationType = "PJMEDIA_ORIENT_UNKNOWN" | "PJMEDIA_ORIENT_ROTATE_90DEG" | "PJMEDIA_ORIENT_ROTATE_270DEG" | "PJMEDIA_ORIENT_ROTATE_180DEG" | "PJMEDIA_ORIENT_NATURAL";
+export declare const ORIENTATIONS: string[];
+export declare type OrientationType = 'PJMEDIA_ORIENT_UNKNOWN' | 'PJMEDIA_ORIENT_ROTATE_90DEG' | 'PJMEDIA_ORIENT_ROTATE_270DEG' | 'PJMEDIA_ORIENT_ROTATE_180DEG' | 'PJMEDIA_ORIENT_NATURAL';
 export default class Endpoint extends EventEmitter {
     constructor();
     /**
@@ -313,4 +357,3 @@ export default class Endpoint extends EventEmitter {
      */
     _normalize(account: Account, destination: string): string | null;
 }
-export {};

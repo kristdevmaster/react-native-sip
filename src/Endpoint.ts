@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-import { EventEmitter } from "events";
-import { DeviceEventEmitter, NativeModules } from "react-native";
-import Account, { AccountConstructor } from "./Account";
-import Call, { CallConstructor } from "./Call";
-import Message from "./Message";
+import { EventEmitter } from 'events';
+import { DeviceEventEmitter, NativeModules } from 'react-native';
+import Account, { AccountConstructor } from './Account';
+import Call, { CallConstructor } from './Call';
+import Message from './Message';
 
 /**
  * SIP headers object, where each key is a header name and value is a header value.
@@ -45,14 +45,14 @@ import Message from "./Message";
  * Setting this to zero will disable video in this call.
  */
 
-interface startResult {
+export interface startResult {
   accounts: Array<AccountConstructor>;
   calls: Array<CallConstructor>;
   settings: any;
   connectivity: any;
 }
 
-interface createAccountConfiguration {
+export interface createAccountConfiguration {
   name: string;
   username: string;
   domain: string;
@@ -63,7 +63,7 @@ interface createAccountConfiguration {
   regTimeout: number;
 }
 
-interface PjSipCallSetttings {
+export interface PjSipCallSetttings {
   /**
    *
    * Bitmask of #pjsua_call_flag constants.
@@ -96,7 +96,7 @@ interface PjSipCallSetttings {
    */
   vid_cnt: number;
 }
-interface PjSipMsgData {
+export interface PjSipMsgData {
   /**
    *
    * Indicates whether the Courage component is present.
@@ -132,36 +132,60 @@ interface PjSipMsgData {
   msg_body: string;
 }
 
-const ORIENTATIONS = [
-  "PJMEDIA_ORIENT_UNKNOWN",
-  "PJMEDIA_ORIENT_ROTATE_90DEG",
-  "PJMEDIA_ORIENT_ROTATE_270DEG",
-  "PJMEDIA_ORIENT_ROTATE_180DEG",
-  "PJMEDIA_ORIENT_NATURAL",
+export const ORIENTATIONS = [
+  'PJMEDIA_ORIENT_UNKNOWN',
+  'PJMEDIA_ORIENT_ROTATE_90DEG',
+  'PJMEDIA_ORIENT_ROTATE_270DEG',
+  'PJMEDIA_ORIENT_ROTATE_180DEG',
+  'PJMEDIA_ORIENT_NATURAL',
 ];
 
-type OrientationType =
-  | "PJMEDIA_ORIENT_UNKNOWN"
-  | "PJMEDIA_ORIENT_ROTATE_90DEG"
-  | "PJMEDIA_ORIENT_ROTATE_270DEG"
-  | "PJMEDIA_ORIENT_ROTATE_180DEG"
-  | "PJMEDIA_ORIENT_NATURAL";
+export type OrientationType =
+  | 'PJMEDIA_ORIENT_UNKNOWN'
+  | 'PJMEDIA_ORIENT_ROTATE_90DEG'
+  | 'PJMEDIA_ORIENT_ROTATE_270DEG'
+  | 'PJMEDIA_ORIENT_ROTATE_180DEG'
+  | 'PJMEDIA_ORIENT_NATURAL';
 
 export default class Endpoint extends EventEmitter {
   constructor() {
     super();
 
     // Subscribe to Accounts events
-    DeviceEventEmitter.addListener("pjSipRegistrationChanged", this._onRegistrationChanged.bind(this));
+    DeviceEventEmitter.addListener(
+      'pjSipRegistrationChanged',
+      this._onRegistrationChanged.bind(this)
+    );
 
     // Subscribe to Calls events
-    DeviceEventEmitter.addListener("pjSipCallReceived", this._onCallReceived.bind(this));
-    DeviceEventEmitter.addListener("pjSipCallChanged", this._onCallChanged.bind(this));
-    DeviceEventEmitter.addListener("pjSipCallTerminated", this._onCallTerminated.bind(this));
-    DeviceEventEmitter.addListener("pjSipCallScreenLocked", this._onCallScreenLocked.bind(this));
-    DeviceEventEmitter.addListener("pjSipMessageReceived", this._onMessageReceived.bind(this));
-    DeviceEventEmitter.addListener("pjSipConnectivityChanged", this._onConnectivityChanged.bind(this));
-    DeviceEventEmitter.addListener("pjSipGSMChanged", this._onGSMChanged.bind(this));
+    DeviceEventEmitter.addListener(
+      'pjSipCallReceived',
+      this._onCallReceived.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipCallChanged',
+      this._onCallChanged.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipCallTerminated',
+      this._onCallTerminated.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipCallScreenLocked',
+      this._onCallScreenLocked.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipMessageReceived',
+      this._onMessageReceived.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipConnectivityChanged',
+      this._onConnectivityChanged.bind(this)
+    );
+    DeviceEventEmitter.addListener(
+      'pjSipGSMChanged',
+      this._onGSMChanged.bind(this)
+    );
   }
 
   /**
@@ -172,44 +196,51 @@ export default class Endpoint extends EventEmitter {
    */
   start(configuration: any) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.start(configuration, (successful: boolean, data: startResult) => {
-        if (successful) {
-          const accounts: Array<Account> = [];
-          const calls: Array<Call> = [];
+      NativeModules.PjSipModule.start(
+        configuration,
+        (successful: boolean, data: startResult) => {
+          if (successful) {
+            const accounts: Array<Account> = [];
+            const calls: Array<Call> = [];
 
-          if (data.hasOwnProperty("accounts")) {
-            data.accounts.forEach((d: AccountConstructor) => {
-              accounts.push(new Account(d));
-            });
-          }
-
-          if (data.hasOwnProperty("calls")) {
-            data.calls.forEach((d: CallConstructor) => {
-              calls.push(new Call(d));
-            });
-          }
-
-          const extra: any = {};
-          Object.entries(data).forEach(([key, value]) => {
-            if (data.hasOwnProperty(key) && key !== "accounts" && key !== "calls") {
-              extra[key] = value;
+            if (data.hasOwnProperty('accounts')) {
+              data.accounts.forEach((d: AccountConstructor) => {
+                accounts.push(new Account(d));
+              });
             }
-          });
 
-          resolve({
-            accounts,
-            calls,
-            ...extra,
-          });
-        } else {
-          reject(data);
+            if (data.hasOwnProperty('calls')) {
+              data.calls.forEach((d: CallConstructor) => {
+                calls.push(new Call(d));
+              });
+            }
+
+            const extra: any = {};
+            Object.entries(data).forEach(([key, value]) => {
+              if (
+                data.hasOwnProperty(key) &&
+                key !== 'accounts' &&
+                key !== 'calls'
+              ) {
+                extra[key] = value;
+              }
+            });
+
+            resolve({
+              accounts,
+              calls,
+              ...extra,
+            });
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
   stop() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       NativeModules.PjSipModule.stop(() => {
         resolve({});
       });
@@ -218,13 +249,17 @@ export default class Endpoint extends EventEmitter {
 
   updateStunServers(accountId: number, stunServerList: any) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.updateStunServers(accountId, stunServerList, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.updateStunServers(
+        accountId,
+        stunServerList,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -234,13 +269,16 @@ export default class Endpoint extends EventEmitter {
    */
   changeNetworkConfiguration(configuration: any) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.changeNetworkConfiguration(configuration, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.changeNetworkConfiguration(
+        configuration,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -250,13 +288,16 @@ export default class Endpoint extends EventEmitter {
    */
   changeServiceConfiguration(configuration: any) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.changeServiceConfiguration(configuration, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.changeServiceConfiguration(
+        configuration,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -283,13 +324,16 @@ export default class Endpoint extends EventEmitter {
    */
   createAccount(configuration: createAccountConfiguration) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.createAccount(configuration, (successful: boolean, data: AccountConstructor) => {
-        if (successful) {
-          resolve(new Account(data));
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.createAccount(
+        configuration,
+        (successful: boolean, data: AccountConstructor) => {
+          if (successful) {
+            resolve(new Account(data));
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -308,13 +352,17 @@ export default class Endpoint extends EventEmitter {
    */
   registerAccount(account: Account, renew = true) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.registerAccount(account.getId(), renew, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.registerAccount(
+        account.getId(),
+        renew,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -326,13 +374,16 @@ export default class Endpoint extends EventEmitter {
    */
   deleteAccount(account: Account) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.deleteAccount(account.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.deleteAccount(
+        account.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -348,7 +399,12 @@ export default class Endpoint extends EventEmitter {
    * @param callSettings {PjSipCallSetttings} Outgoing call settings.
    * @param msgSettings {PjSipMsgData} Outgoing call additional information to be sent with outgoing SIP message.
    */
-  makeCall(account: Account, destination: string, callSettings: PjSipCallSetttings, msgData: PjSipMsgData) {
+  makeCall(
+    account: Account,
+    destination: string,
+    callSettings: PjSipCallSetttings,
+    msgData: PjSipMsgData
+  ) {
     const normalizedDestination = this._normalize(account, destination);
 
     return new Promise((resolve, reject) => {
@@ -363,7 +419,7 @@ export default class Endpoint extends EventEmitter {
           } else {
             reject(data);
           }
-        },
+        }
       );
     });
   }
@@ -390,7 +446,7 @@ export default class Endpoint extends EventEmitter {
           } else {
             reject(data);
           }
-        },
+        }
       );
     });
   }
@@ -409,7 +465,7 @@ export default class Endpoint extends EventEmitter {
           } else {
             reject(data);
           }
-        },
+        }
       );
     });
   }
@@ -422,13 +478,16 @@ export default class Endpoint extends EventEmitter {
    */
   answerCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.answerCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.answerCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -441,13 +500,16 @@ export default class Endpoint extends EventEmitter {
   hangupCall(call: Call) {
     // TODO: Add possibility to pass code and reason for hangup.
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.hangupCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.hangupCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -459,13 +521,16 @@ export default class Endpoint extends EventEmitter {
    */
   declineCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.declineCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.declineCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -477,13 +542,16 @@ export default class Endpoint extends EventEmitter {
    */
   holdCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.holdCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.holdCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -495,13 +563,16 @@ export default class Endpoint extends EventEmitter {
    */
   unholdCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.unholdCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.unholdCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -511,13 +582,16 @@ export default class Endpoint extends EventEmitter {
    */
   muteCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.muteCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.muteCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -527,13 +601,16 @@ export default class Endpoint extends EventEmitter {
    */
   unMuteCall(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.unMuteCall(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.unMuteCall(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -543,13 +620,16 @@ export default class Endpoint extends EventEmitter {
    */
   useSpeaker(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.useSpeaker(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.useSpeaker(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -559,13 +639,16 @@ export default class Endpoint extends EventEmitter {
    */
   useEarpiece(call: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.useEarpiece(call.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.useEarpiece(
+        call.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -582,13 +665,17 @@ export default class Endpoint extends EventEmitter {
     const normalizedDestination = this._normalize(account, destination);
 
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.xferCall(call.getId(), normalizedDestination, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.xferCall(
+        call.getId(),
+        normalizedDestination,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -603,13 +690,17 @@ export default class Endpoint extends EventEmitter {
    */
   xferReplacesCall(call: Call, destCall: Call) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.xferReplacesCall(call.getId(), destCall.getId(), (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.xferReplacesCall(
+        call.getId(),
+        destCall.getId(),
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -626,13 +717,17 @@ export default class Endpoint extends EventEmitter {
     const normalizedDestination = this._normalize(account, destination);
 
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.redirectCall(call.getId(), normalizedDestination, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.redirectCall(
+        call.getId(),
+        normalizedDestination,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -645,44 +740,54 @@ export default class Endpoint extends EventEmitter {
    */
   dtmfCall(call: Call, digits: string) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.dtmfCall(call.getId(), digits, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.dtmfCall(
+        call.getId(),
+        digits,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
   activateAudioSession() {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.activateAudioSession((successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.activateAudioSession(
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
   deactivateAudioSession() {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.deactivateAudioSession((successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.deactivateAudioSession(
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
   changeOrientation(orientation: OrientationType) {
     if (ORIENTATIONS.indexOf(orientation) === -1) {
       throw new Error(
-        `Invalid ${JSON.stringify(orientation)} device orientation, but expected ${ORIENTATIONS.join(", ")} values`,
+        `Invalid ${JSON.stringify(
+          orientation
+        )} device orientation, but expected ${ORIENTATIONS.join(', ')} values`
       );
     }
 
@@ -691,13 +796,16 @@ export default class Endpoint extends EventEmitter {
 
   changeCodecSettings(codecSettings: any) {
     return new Promise((resolve, reject) => {
-      NativeModules.PjSipModule.changeCodecSettings(codecSettings, (successful: boolean, data: any) => {
-        if (successful) {
-          resolve(data);
-        } else {
-          reject(data);
+      NativeModules.PjSipModule.changeCodecSettings(
+        codecSettings,
+        (successful: boolean, data: any) => {
+          if (successful) {
+            resolve(data);
+          } else {
+            reject(data);
+          }
         }
-      });
+      );
     });
   }
 
@@ -713,7 +821,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#connectivity_changed
      * @property {Account} account
      */
-    this.emit("connectivity_changed", new Account(data));
+    this.emit('connectivity_changed', new Account(data));
   }
 
   /**
@@ -728,7 +836,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#gsm_changed
      * @property {Boolean} isUsingGSM
      */
-    this.emit("gsm_changed", data);
+    this.emit('gsm_changed', data);
   }
 
   /**
@@ -743,7 +851,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#registration_changed
      * @property {Account} account
      */
-    this.emit("registration_changed", new Account(data));
+    this.emit('registration_changed', new Account(data));
   }
 
   /**
@@ -758,7 +866,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#call_received
      * @property {Call} call
      */
-    this.emit("call_received", new Call(data));
+    this.emit('call_received', new Call(data));
   }
 
   /**
@@ -773,7 +881,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#call_changed
      * @property {Call} call
      */
-    this.emit("call_changed", new Call(data));
+    this.emit('call_changed', new Call(data));
   }
 
   /**
@@ -788,7 +896,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#call_terminated
      * @property {Call} call
      */
-    this.emit("call_terminated", new Call(data));
+    this.emit('call_terminated', new Call(data));
   }
 
   /**
@@ -803,7 +911,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#call_screen_locked
      * @property bool lock
      */
-    this.emit("call_screen_locked", lock);
+    this.emit('call_screen_locked', lock);
   }
 
   /**
@@ -818,7 +926,7 @@ export default class Endpoint extends EventEmitter {
      * @event Endpoint#message_received
      * @property {Message} message
      */
-    this.emit("message_received", new Message(data));
+    this.emit('message_received', new Message(data));
   }
 
   // /**
@@ -844,12 +952,12 @@ export default class Endpoint extends EventEmitter {
    */
   _normalize(account: Account, destination: string) {
     let normalizedData = null;
-    if (!destination.startsWith("sip:")) {
+    if (!destination.startsWith('sip:')) {
       let realm = account.getRegServer();
 
       if (!realm) {
         realm = account.getDomain();
-        const s = realm.indexOf(":");
+        const s = realm.indexOf(':');
 
         if (s > 0) {
           realm = realm.substr(0, s + 1);

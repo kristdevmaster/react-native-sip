@@ -1,5 +1,5 @@
 {
-  "version": "2.10.19",
+  "version": "2.10.20",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",

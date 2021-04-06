@@ -1,13 +1,8 @@
-import Account from "./Account";
-import Call from "./Call";
-import Endpoint from "./Endpoint";
-import PreviewVideoView from "./PreviewVideoView";
-import RemoteVideoView from "./RemoteVideoView";
+import Account from './Account';
+import Call from './Call';
+import Endpoint from './Endpoint';
+import PreviewVideoView from './PreviewVideoView';
+import RemoteVideoView from './RemoteVideoView';
 
-module.exports = {
-  Account,
-  Call,
-  Endpoint,
-  PreviewVideoView,
-  RemoteVideoView,
-};
+export { Account, Call, Endpoint, PreviewVideoView, RemoteVideoView };
+export default Endpoint;

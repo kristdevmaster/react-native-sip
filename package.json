@@ -35,6 +35,9 @@
     "ios",
     "android"
   ],
+  "license": "MIT",
+  "description": "SIP module for React Native",
+  "homepage": "https://github.com/FastPBX/react-native-sip",
   "author": {
     "name": "Attila Szenci",
     "email": "szenci@dotlab.rs"

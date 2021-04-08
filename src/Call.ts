@@ -2,19 +2,26 @@
  * This class describes the information and current status of a call.
  */
 export type CallStates =
-  | "PJSIP_INV_STATE_NULL"
-  | "PJSIP_INV_STATE_CALLING"
-  | "PJSIP_INV_STATE_INCOMING"
-  | "PJSIP_INV_STATE_EARLY"
-  | "PJSIP_INV_STATE_CONNECTING"
-  | "PJSIP_INV_STATE_CONFIRMED"
-  | "PJSIP_INV_STATE_DISCONNECTED";
+  | 'PJSIP_INV_STATE_NULL'
+  | 'PJSIP_INV_STATE_CALLING'
+  | 'PJSIP_INV_STATE_INCOMING'
+  | 'PJSIP_INV_STATE_EARLY'
+  | 'PJSIP_INV_STATE_CONNECTING'
+  | 'PJSIP_INV_STATE_CONFIRMED'
+  | 'PJSIP_INV_STATE_DISCONNECTED';
 
-export type CallStateText = "NULL" | "CALLING" | "INCOMING" | "EARLY" | "CONNECTING" | "CONFIRMED" | "DISCONNECTED";
+export type CallStateText =
+  | 'NULL'
+  | 'CALLING'
+  | 'INCOMING'
+  | 'EARLY'
+  | 'CONNECTING'
+  | 'CONFIRMED'
+  | 'DISCONNECTED';
 
 export interface CallConstructor {
   id: number;
-  callId: number;
+  callId: string;
   accountId: number;
   localContact: string;
   localUri: string;
@@ -40,7 +47,7 @@ export interface CallConstructor {
 export default class Call {
   _id: number;
 
-  _callId: number;
+  _callId: string;
 
   _accountId: number;
 
@@ -81,120 +88,120 @@ export default class Call {
   _videoCount: number;
 
   _lastStatusCode:
-    | "PJSIP_SC_TRYING"
+    | 'PJSIP_SC_TRYING'
     | 100
-    | "PJSIP_SC_RINGING"
+    | 'PJSIP_SC_RINGING'
     | 180
-    | "PJSIP_SC_CALL_BEING_FORWARDED"
+    | 'PJSIP_SC_CALL_BEING_FORWARDED'
     | 181
-    | "PJSIP_SC_QUEUED"
+    | 'PJSIP_SC_QUEUED'
     | 182
-    | "PJSIP_SC_PROGRESS"
+    | 'PJSIP_SC_PROGRESS'
     | 183
-    | "PJSIP_SC_OK"
+    | 'PJSIP_SC_OK'
     | 200
-    | "PJSIP_SC_ACCEPTED"
+    | 'PJSIP_SC_ACCEPTED'
     | 202
-    | "PJSIP_SC_MULTIPLE_CHOICES"
+    | 'PJSIP_SC_MULTIPLE_CHOICES'
     | 300
-    | "PJSIP_SC_MOVED_PERMANENTLY"
+    | 'PJSIP_SC_MOVED_PERMANENTLY'
     | 301
-    | "PJSIP_SC_MOVED_TEMPORARILY"
+    | 'PJSIP_SC_MOVED_TEMPORARILY'
     | 302
-    | "PJSIP_SC_USE_PROXY"
+    | 'PJSIP_SC_USE_PROXY'
     | 305
-    | "PJSIP_SC_ALTERNATIVE_SERVICE"
+    | 'PJSIP_SC_ALTERNATIVE_SERVICE'
     | 380
-    | "PJSIP_SC_BAD_REQUEST"
+    | 'PJSIP_SC_BAD_REQUEST'
     | 400
-    | "PJSIP_SC_UNAUTHORIZED"
+    | 'PJSIP_SC_UNAUTHORIZED'
     | 401
-    | "PJSIP_SC_PAYMENT_REQUIRED"
+    | 'PJSIP_SC_PAYMENT_REQUIRED'
     | 402
-    | "PJSIP_SC_FORBIDDEN"
+    | 'PJSIP_SC_FORBIDDEN'
     | 403
-    | "PJSIP_SC_NOT_FOUND"
+    | 'PJSIP_SC_NOT_FOUND'
     | 404
-    | "PJSIP_SC_METHOD_NOT_ALLOWED"
+    | 'PJSIP_SC_METHOD_NOT_ALLOWED'
     | 405
-    | "PJSIP_SC_NOT_ACCEPTABLE"
+    | 'PJSIP_SC_NOT_ACCEPTABLE'
     | 406
-    | "PJSIP_SC_PROXY_AUTHENTICATION_REQUIRED"
+    | 'PJSIP_SC_PROXY_AUTHENTICATION_REQUIRED'
     | 407
-    | "PJSIP_SC_REQUEST_TIMEOUT"
+    | 'PJSIP_SC_REQUEST_TIMEOUT'
     | 408
-    | "PJSIP_SC_GONE"
+    | 'PJSIP_SC_GONE'
     | 410
-    | "PJSIP_SC_REQUEST_ENTITY_TOO_LARGE"
+    | 'PJSIP_SC_REQUEST_ENTITY_TOO_LARGE'
     | 413
-    | "PJSIP_SC_REQUEST_URI_TOO_LONG"
+    | 'PJSIP_SC_REQUEST_URI_TOO_LONG'
     | 414
-    | "PJSIP_SC_UNSUPPORTED_MEDIA_TYPE"
+    | 'PJSIP_SC_UNSUPPORTED_MEDIA_TYPE'
     | 415
-    | "PJSIP_SC_UNSUPPORTED_URI_SCHEME"
+    | 'PJSIP_SC_UNSUPPORTED_URI_SCHEME'
     | 416
-    | "PJSIP_SC_BAD_EXTENSION"
+    | 'PJSIP_SC_BAD_EXTENSION'
     | 420
-    | "PJSIP_SC_EXTENSION_REQUIRED"
+    | 'PJSIP_SC_EXTENSION_REQUIRED'
     | 421
-    | "PJSIP_SC_SESSION_TIMER_TOO_SMALL"
+    | 'PJSIP_SC_SESSION_TIMER_TOO_SMALL'
     | 422
-    | "PJSIP_SC_INTERVAL_TOO_BRIEF"
+    | 'PJSIP_SC_INTERVAL_TOO_BRIEF'
     | 423
-    | "PJSIP_SC_TEMPORARILY_UNAVAILABLE"
+    | 'PJSIP_SC_TEMPORARILY_UNAVAILABLE'
     | 480
-    | "PJSIP_SC_CALL_TSX_DOES_NOT_EXIST"
+    | 'PJSIP_SC_CALL_TSX_DOES_NOT_EXIST'
     | 481
-    | "PJSIP_SC_LOOP_DETECTED"
+    | 'PJSIP_SC_LOOP_DETECTED'
     | 482
-    | "PJSIP_SC_TOO_MANY_HOPS"
+    | 'PJSIP_SC_TOO_MANY_HOPS'
     | 483
-    | "PJSIP_SC_ADDRESS_INCOMPLETE"
+    | 'PJSIP_SC_ADDRESS_INCOMPLETE'
     | 484
-    | "PJSIP_AC_AMBIGUOUS"
+    | 'PJSIP_AC_AMBIGUOUS'
     | 485
-    | "PJSIP_SC_BUSY_HERE"
+    | 'PJSIP_SC_BUSY_HERE'
     | 486
-    | "PJSIP_SC_REQUEST_TERMINATED"
+    | 'PJSIP_SC_REQUEST_TERMINATED'
     | 487
-    | "PJSIP_SC_NOT_ACCEPTABLE_HERE"
+    | 'PJSIP_SC_NOT_ACCEPTABLE_HERE'
     | 488
-    | "PJSIP_SC_BAD_EVENT"
+    | 'PJSIP_SC_BAD_EVENT'
     | 489
-    | "PJSIP_SC_REQUEST_UPDATED"
+    | 'PJSIP_SC_REQUEST_UPDATED'
     | 490
-    | "PJSIP_SC_REQUEST_PENDING"
+    | 'PJSIP_SC_REQUEST_PENDING'
     | 491
-    | "PJSIP_SC_UNDECIPHERABLE"
+    | 'PJSIP_SC_UNDECIPHERABLE'
     | 493
-    | "PJSIP_SC_INTERNAL_SERVER_ERROR"
+    | 'PJSIP_SC_INTERNAL_SERVER_ERROR'
     | 500
-    | "PJSIP_SC_NOT_IMPLEMENTED"
+    | 'PJSIP_SC_NOT_IMPLEMENTED'
     | 501
-    | "PJSIP_SC_BAD_GATEWAY"
+    | 'PJSIP_SC_BAD_GATEWAY'
     | 502
-    | "PJSIP_SC_SERVICE_UNAVAILABLE"
+    | 'PJSIP_SC_SERVICE_UNAVAILABLE'
     | 503
-    | "PJSIP_SC_SERVER_TIMEOUT"
+    | 'PJSIP_SC_SERVER_TIMEOUT'
     | 504
-    | "PJSIP_SC_VERSION_NOT_SUPPORTED"
+    | 'PJSIP_SC_VERSION_NOT_SUPPORTED'
     | 505
-    | "PJSIP_SC_MESSAGE_TOO_LARGE"
+    | 'PJSIP_SC_MESSAGE_TOO_LARGE'
     | 513
-    | "PJSIP_SC_PRECONDITION_FAILURE"
+    | 'PJSIP_SC_PRECONDITION_FAILURE'
     | 580
-    | "PJSIP_SC_BUSY_EVERYWHERE"
+    | 'PJSIP_SC_BUSY_EVERYWHERE'
     | 600
-    | "PJSIP_SC_DECLINE"
+    | 'PJSIP_SC_DECLINE'
     | 603
-    | "PJSIP_SC_DOES_NOT_EXIST_ANYWHERE"
+    | 'PJSIP_SC_DOES_NOT_EXIST_ANYWHERE'
     | 604
-    | "PJSIP_SC_NOT_ACCEPTABLE_ANYWHERE"
+    | 'PJSIP_SC_NOT_ACCEPTABLE_ANYWHERE'
     | 606
-    | "PJSIP_SC_TSX_TIMEOUT"
-    | "PJSIP_SC_REQUEST_TIMEOUT"
-    | "PJSIP_SC_TSX_TRANSPORT_ERROR"
-    | "PJSIP_SC_SERVICE_UNAVAILABLE";
+    | 'PJSIP_SC_TSX_TIMEOUT'
+    | 'PJSIP_SC_REQUEST_TIMEOUT'
+    | 'PJSIP_SC_TSX_TRANSPORT_ERROR'
+    | 'PJSIP_SC_SERVICE_UNAVAILABLE';
 
   _lastReason: string;
 
@@ -326,7 +333,10 @@ export default class Call {
    * @returns {int}
    */
   getConnectDuration() {
-    if (this._connectDuration < 0 || this._state === "PJSIP_INV_STATE_DISCONNECTED") {
+    if (
+      this._connectDuration < 0 ||
+      this._state === 'PJSIP_INV_STATE_DISCONNECTED'
+    ) {
       return this._connectDuration;
     }
 
@@ -460,7 +470,7 @@ export default class Call {
   }
 
   isTerminated() {
-    return this._state === "PJSIP_INV_STATE_DISCONNECTED";
+    return this._state === 'PJSIP_INV_STATE_DISCONNECTED';
   }
 
   /**
@@ -598,18 +608,20 @@ export default class Call {
    */
   _formatTime(seconds: number) {
     if (isNaN(seconds) || seconds < 0) {
-      return "00:00";
+      return '00:00';
     }
     const hours = parseInt((seconds / 3600).toString(), 10) % 24;
     const minutes = parseInt((seconds / 60).toString(), 10) % 60;
-    let result = "";
+    let result = '';
     const restSeconds = seconds % 60;
 
     if (hours > 0) {
       result += `${hours < 10 ? `0${hours}` : hours}:`;
     }
 
-    result += `${minutes < 10 ? `0${minutes}` : minutes}:${restSeconds < 10 ? `0${restSeconds}` : restSeconds}`;
+    result += `${minutes < 10 ? `0${minutes}` : minutes}:${
+      restSeconds < 10 ? `0${restSeconds}` : restSeconds
+    }`;
     return result;
   }
 }

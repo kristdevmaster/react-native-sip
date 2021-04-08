@@ -67,28 +67,28 @@ export interface PjSipCallSetttings {
      * @type {number}
      * @memberof PjSipCallSetttings
      */
-    flag: number;
+    flag?: number;
     /**
      *
      * This flag controls what methods to request keyframe are allowed on the call.
      * @type {number}
      * @memberof PjSipCallSetttings
      */
-    req_keyfram_method: number;
+    req_keyfram_method?: number;
     /**
      *
      * Number of simultaneous active audio streams for this call. Setting this to zero will disable audio in this call.
      * @type {number}
      * @memberof PjSipCallSetttings
      */
-    aud_cnt: number;
+    aud_cnt?: number;
     /**
      *
      * Number of simultaneous active video streams for this call. Setting this to zero will disable video in this call.
      * @type {number}
      * @memberof PjSipCallSetttings
      */
-    vid_cnt: number;
+    vid_cnt?: number;
 }
 export interface PjSipMsgData {
     /**
@@ -97,14 +97,14 @@ export interface PjSipMsgData {
      * @type {string}
      * @memberof PjSipMsgData
      */
-    target_uri: string;
+    target_uri?: string;
     /**
      *
      * Additional message headers as linked list.
      * @type {*}
      * @memberof PjSipMsgData
      */
-    hdr_list: {
+    hdr_list?: {
         [key: string]: string | number;
     };
     /**
@@ -113,14 +113,14 @@ export interface PjSipMsgData {
      * @type {string}
      * @memberof PjSipMsgData
      */
-    content_type: string;
+    content_type?: string;
     /**
      *
      * MIME type of optional message body.
      * @type {string}
      * @memberof PjSipMsgData
      */
-    msg_body: string;
+    msg_body?: string;
 }
 export declare const ORIENTATIONS: string[];
 export declare type OrientationType = 'PJMEDIA_ORIENT_UNKNOWN' | 'PJMEDIA_ORIENT_ROTATE_90DEG' | 'PJMEDIA_ORIENT_ROTATE_270DEG' | 'PJMEDIA_ORIENT_ROTATE_180DEG' | 'PJMEDIA_ORIENT_NATURAL';
@@ -360,5 +360,5 @@ export default class Endpoint extends EventEmitter {
      * @returns {string}
      * @private
      */
-    _normalize(account: Account, destination: string): string | null;
+    _normalize(account: Account, destination: string): string;
 }

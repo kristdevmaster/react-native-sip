@@ -76,7 +76,7 @@ export interface PjSipCallSetttings {
    * @type {number}
    * @memberof PjSipCallSetttings
    */
-  flag: number;
+  flag?: number;
 
   /**
    *
@@ -84,7 +84,7 @@ export interface PjSipCallSetttings {
    * @type {number}
    * @memberof PjSipCallSetttings
    */
-  req_keyfram_method: number;
+  req_keyfram_method?: number;
 
   /**
    *
@@ -92,7 +92,7 @@ export interface PjSipCallSetttings {
    * @type {number}
    * @memberof PjSipCallSetttings
    */
-  aud_cnt: number;
+  aud_cnt?: number;
 
   /**
    *
@@ -100,7 +100,7 @@ export interface PjSipCallSetttings {
    * @type {number}
    * @memberof PjSipCallSetttings
    */
-  vid_cnt: number;
+  vid_cnt?: number;
 }
 export interface PjSipMsgData {
   /**
@@ -109,7 +109,7 @@ export interface PjSipMsgData {
    * @type {string}
    * @memberof PjSipMsgData
    */
-  target_uri: string;
+  target_uri?: string;
 
   /**
    *
@@ -117,7 +117,7 @@ export interface PjSipMsgData {
    * @type {*}
    * @memberof PjSipMsgData
    */
-  hdr_list: {
+  hdr_list?: {
     [key: string]: string | number;
   };
 
@@ -127,7 +127,7 @@ export interface PjSipMsgData {
    * @type {string}
    * @memberof PjSipMsgData
    */
-  content_type: string;
+  content_type?: string;
 
   /**
    *
@@ -135,7 +135,7 @@ export interface PjSipMsgData {
    * @type {string}
    * @memberof PjSipMsgData
    */
-  msg_body: string;
+  msg_body?: string;
 }
 
 export const ORIENTATIONS = [
@@ -957,7 +957,7 @@ export default class Endpoint extends EventEmitter {
    * @private
    */
   _normalize(account: Account, destination: string) {
-    let normalizedData = null;
+    let normalizedData = destination;
     if (!destination.startsWith('sip:')) {
       let realm = account.getRegServer();
 

@@ -263,10 +263,17 @@ public class PjSipService extends Service {
 
         try {
             if (mEndpoint != null) {
+               for(PjSipAccount account : mAccounts){
+                   account.delete();
+               }
+                mEmitter.fireServiceStopped();
+
                 mEndpoint.libStopWorkerThreads();
                 mEndpoint.libDestroy();
                 mEndpoint.delete();
                 mEndpoint = null;
+
+
             }
         } catch (Exception e) {
             Log.w(TAG, "Failed to destroy PjSip library", e);
@@ -1024,7 +1031,7 @@ public class PjSipService extends Service {
                 public void run() {
                     // Acquire wake lock
                     if (mIncallWakeLock == null) {
-                        mIncallWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "incall");
+                        mIncallWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PjSipService:in_call");
                     }
                     if (!mIncallWakeLock.isHeld()) {
                         mIncallWakeLock.acquire();

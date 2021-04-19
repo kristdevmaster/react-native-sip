@@ -317,6 +317,11 @@ export default class Endpoint extends EventEmitter {
      */
     _onGSMChanged(data: any): void;
     /**
+     * @fires Endpoint#on_stopped
+     * @private
+     */
+    _onStopped(): void;
+    /**
      * @fires Endpoint#registration_changed
      * @private
      * @param data {Object}

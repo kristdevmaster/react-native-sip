@@ -53,6 +53,7 @@ public class PjActions {
     public static final String EVENT_MESSAGE_RECEIVED = "com.carusto.message.received";
     public static final String EVENT_HANDLED = "com.carusto.handled";
     public static final String EVENT_GSM_CHANGED = "com.carusto.gsm.changed";
+    public static final String EVENT_STOPPED = "com.carusto.service.stopped";
 
     public static Intent createStartIntent(int callbackId, ReadableMap configuration, Context context) {
         Intent intent = new Intent(context, PjSipService.class);

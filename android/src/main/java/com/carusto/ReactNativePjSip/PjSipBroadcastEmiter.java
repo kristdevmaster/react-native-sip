@@ -128,4 +128,10 @@ public class PjSipBroadcastEmiter {
 
         context.sendBroadcast(intent);
     }
+
+    public void fireServiceStopped(){
+        Intent intent = new Intent();
+        intent.setAction(PjActions.EVENT_STOPPED);
+        context.sendBroadcast(intent);
+    }
 }

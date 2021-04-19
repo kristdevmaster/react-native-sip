@@ -192,6 +192,10 @@ export default class Endpoint extends EventEmitter {
       'pjSipGSMChanged',
       this._onGSMChanged.bind(this)
     );
+    DeviceEventEmitter.addListener(
+      'pjSipStopped',
+      this._onStopped.bind(this)
+    );
   }
 
   /**
@@ -843,6 +847,18 @@ export default class Endpoint extends EventEmitter {
      * @property {Boolean} isUsingGSM
      */
     this.emit('gsm_changed', data);
+  }
+  /**
+   * @fires Endpoint#on_stopped
+   * @private
+   */
+   _onStopped() {
+    /**
+     * Fires when the service is destroyed
+     *
+     * @event Endpoint#on_stopped
+     */
+    this.emit('on_stopped', null);
   }
 
   /**

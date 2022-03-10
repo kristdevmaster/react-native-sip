@@ -1,4 +1,6 @@
 {
+  "name": "react-native-sip",
+  "description": "SIP module based on PjSIP for React Native",
   "version": "2.10.24",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
